@@ -1,0 +1,65 @@
+@font-face {
+    font-family: roboto;
+    src: url('file:///android_asset/fonts/RobotoCondensed-Regular.ttf');
+}
+
+body {
+	font-family: roboto;
+	background-color: #1A1B1E;
+	color: white;
+}
+
+a {
+	color: #FFE4C4;
+	text-decoration: none;
+}
+
+ul {
+	list-style-type: none;
+	padding: 0 1em;
+}
+
+img.fab {
+	background-color: #f50057;
+	border-radius:1.5em;
+	width: 2em;
+	height: 2em;
+	padding: .5em;
+	float: right;
+	margin: 0 1em;
+}
+
+img.actionbar {
+	width: 2em;
+	height: 2em;
+	padding: .5em;
+	float: right;
+	margin: 0 1em;
+}
+
+img.list {
+	width: 2em;
+	height: 2em;
+	vertical-align: middle;
+}
+
+img.listview {
+	width: 2em;
+	height: 2em;
+	padding: .5em;
+	float: right;
+	margin: 0 1em;
+}
+
+.url {
+	font-style: italic;
+}
+
+span.git {
+	font-style: italic;
+	color: #FFD700;	
+}
+
+em {
+    color: #cfd8dc;
+}

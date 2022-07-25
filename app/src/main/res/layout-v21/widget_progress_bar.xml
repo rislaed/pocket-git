@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:aapt="http://schemas.android.com/aapt"
+	android:id="@+id/progress"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_marginTop="-4dp"
+	android:indeterminate="true"
+	android:minHeight="4dp"
+	android:elevation="8dp"
+	app:spb_color="?attr/colorPrimary"
+	app:spb_mirror_mode="false"
+	app:spb_reversed="false"
+	app:spb_sections_count="5"
+	app:spb_speed="0.2"
+	app:spb_stroke_separator_length="8dp"
+	app:spb_stroke_width="4dp" />

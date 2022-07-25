@@ -1,0 +1,32 @@
+[
+  {
+    "artifactId": "appcompat",
+    "excludes": [],
+    "groupId": "androidx.appcompat",
+    "versionName": "1.4.2"
+  },
+  {
+    "artifactId": "material",
+    "excludes": [],
+    "groupId": "com.google.android.material",
+    "versionName": "1.6.1"
+  },
+  {
+    "artifactId": "library",
+    "excludes": [],
+    "groupId": "com.github.castorflex.smoothprogressbar",
+    "versionName": "1.1.0"
+  },
+  {
+    "artifactId": "org.eclipse.jgit.ssh.jsch",
+    "excludes": [],
+    "groupId": "org.eclipse.jgit",
+    "versionName": "6.2.0.202206071550-r"
+  },
+  {
+    "artifactId": "core",
+    "excludes": [],
+    "groupId": "com.afollestad.material-dialogs",
+    "versionName": "0.9.6.0"
+  }
+]

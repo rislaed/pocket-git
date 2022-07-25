@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:aapt="http://schemas.android.com/aapt">
+	<item
+		android:icon="@drawable/ic_action_select_all"
+		android:id="@+id/action_select_all"
+		android:title="@string/action_select_all"
+		app:showAsAction="always"/>
+	<item
+		android:icon="@drawable/ic_action_stage"
+		android:id="@+id/action_stage_file"
+		android:title="@string/action_stage_file"
+		app:showAsAction="always"/>
+	<item
+		android:icon="@drawable/ic_action_unstage"
+		android:id="@+id/action_unstage_file"
+		android:title="@string/action_unstage_file"
+		app:showAsAction="never"/>
+	<item
+		android:icon="@drawable/ic_action_remove"
+		android:id="@+id/action_remove_file"
+		android:title="@string/action_remove_file"
+		app:showAsAction="ifRoom"/>
+	<item
+		android:icon="@drawable/ic_action_delete"
+		android:id="@+id/action_delete_file"
+		android:title="@string/action_delete_file"
+		app:showAsAction="never"/>
+	<item
+		android:icon="@drawable/ic_action_revert_file"
+		android:id="@+id/action_revert_file"
+		android:title="@string/action_revert_file"
+		app:showAsAction="ifRoom"/>
+	<item
+		android:icon="@drawable/ic_action_diff_file"
+		android:id="@+id/action_diff_file"
+		android:title="@string/action_diff_file"
+		app:showAsAction="never"/>
+	<item
+		android:icon="@drawable/ic_action_blame"
+		android:id="@+id/action_blame_file"
+		android:title="@string/action_blame"
+		app:showAsAction="never"/>
+</menu>

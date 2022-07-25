@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <ListView android:id="@+id/list_staged" android:padding="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <EditText android:gravity="top" android:id="@+id/text_message" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="8dp" android:minHeight="48dp" android:hint="@string/hint_commit_message" android:minLines="3" android:inputType="textMultiLine"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="horizontal" android:background="?android:attr/activatedBackgroundIndicator" android:padding="8dp" android:layout_width="match_parent" android:layout_height="match_parent" android:animateLayoutChanges="true">
+    <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+        <TextView android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" android:ellipsize="middle" android:id="@+id/text_name" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="v.1.1" android:maxLines="1"/>
+        <TextView android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" android:ellipsize="middle" android:id="@+id/text_message" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Some description" android:maxLines="1"/>
+    </LinearLayout>
+    <androidx.appcompat.widget.AppCompatCheckBox android:id="@+id/check_tag" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+</LinearLayout>

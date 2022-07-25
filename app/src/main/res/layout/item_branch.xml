@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="horizontal" android:background="?android:attr/activatedBackgroundIndicator" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <ImageView android:layout_gravity="center_vertical" android:id="@+id/current_branch" android:layout_width="8dp" android:layout_height="8dp" android:src="@drawable/branch_indicator"/>
+    <TextView android:textAppearance="?android:attr/textAppearanceSmall" android:ellipsize="end" android:gravity="center_vertical" android:layout_gravity="center_vertical" android:id="@+id/branch_name" android:padding="8dp" android:layout_width="0dp" android:layout_height="wrap_content" android:lines="1" android:layout_weight="1"/>
+</LinearLayout>

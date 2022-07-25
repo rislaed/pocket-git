@@ -1,0 +1,311 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css">
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<h3>Index</h3>
+		<ul>
+			<li><a href="#manually">Importing a project manually</a></li>
+			<li><a href="#github">Importing from github or bitbucket</a></li>
+			<li><a href="#cloning">Cloning a project</a></li>
+			<li><a href="#editing">Editing a file</a></li>
+			<li><a href="#staging">Staging changes</a></li>
+			<li><a href="#icons">File status icons</a></li>
+			<li><a href="#committing">Committing</a></li>
+			<li><a href="#pushing">Pushing and Pulling</a></li>
+			<li><a href="#branches">Checkout branches</a></li>
+			<li><a href="#merging">Merging branches</a></li>
+			<li><a href="#add">Creating branches</a></li>
+			<li><a href="#remove">Removing branches</a></li>
+			<li><a href="#revert">Reverting changes</a></li>
+			<li><a href="#log">Viewing the graphical log</a></li>
+			<li><a href="#checkout">Checking out a commit</a></li>
+			<li><a href="#inspect">Inspecting a commit</a></li>
+			<li><a href="#diff">Comparing changes</a></li>
+		</ul>
+		
+		<h3 id="manually">Importing a project manually</h3>
+		
+		<img src="file:///android_res/drawable/ic_action_add.png" class="fab">
+		<p>To import a project into Pocket Git, start by pressing the action 
+		button in the initial activity.</p>
+
+		<p>After that, choose a <strong>name</strong> for your project.</p> 
+		<p>The <strong>repository URL</strong> can either use the SSH protocol, for example 
+		<span class="url">git@github.com:user/project.git</span>, or the HTTP protocol, for example
+		<span class="url">https://github.com/user/project.git</span>.</p>
+		
+		<p>The local path is the directory where the project will be created. You can choose it using
+		the included directory selector. You can choose the initial directory for your projects in
+		the settings.</p>
+		
+		<p>You can then choose three different forms of <strong>authentication</strong>: none, password and private key.</p> 
+		
+		<p><strong>None</strong> means you will be an anonymous user with little privileges.</p> 
+		
+		Picking <strong>password</strong>, you will have to set a username, and optionally a password. Leaving 
+		the password field empty will make Pocket Git ask for it when needed.</p>
+		
+		Picking <strong>private key</strong> will allow you to select the path of your private key. If the private key 
+		is <strong>passphrase</strong> protected, Pocket Git will ask for the passphrase when needed.</p>
+		
+		<img src="file:///android_res/drawable/ic_action_save.png" class="actionbar">
+		<p>When you're ready, press the <em>save</em> icon to save your new project. You will need to clone it first
+		before using it.</p>
+		
+		<h3 id="github">Importing from github or bitbucket</h3>
+		
+		<p>If your project is hosted by <em>github</em> or <em>bitbucket</em>, you will simply have to
+		use your browser to navigate to your project's <em>github</em> or <em>bitbucket</em> home. From there,
+		share the page with Pocket Git. After that, you will be able to select between the HTTP and SSH protocols.</p>
+		
+		<p>Every field will be automatically filled except for the authentication.</p>
+		
+		<p>Sharing a github or bitbucket link for a project already imported will open the project or offer to clone the project instead.</p>
+		
+		<h3 id="cloning">Cloning a project</h3>
+		
+		<img src="file:///android_res/drawable/ic_action_clone.png" class="listview">
+		
+		<p>A project that isn't already cloned will have a clone icon next to it. Pressing the project will initiate 
+		a clone. If the local path isn't empty, you will be prompted before its contents are deleted.</p>
+
+		<p>As the clone progresses, you will be able to see a notification informing you of the current state of the cloning:</p>
+
+		<p>
+			<img src="file:///android_res/drawable/ic_action_clone" class="list">
+			Project hasn't been cloned yet. Press it to clone it.
+		</p>
+
+		<p>
+			<img src="file:///android_res/drawable/ic_cloned" class="list">
+			Project is already cloned. Press it to enter it.
+		</p>
+
+		<p>
+			<img src="file:///android_res/drawable/ic_cloning" class="list">
+			Project is being cloned. You can follow its progress in a status bar notification.
+		</p>
+
+		<p>
+			<img src="file:///android_res/drawable/ic_failed" class="list">
+			Project failed to clone. Press it to try cloning again.
+		</p>
+
+		<h3 id="#editing">Editing a file</h3>
+		
+		<p>After opening a project, you will see a list of files. You can navigate in the directory tree by pressing the directory names.</p>
+
+		<p>To open a file for editing, simply press that file's name. You will be presented with a list of applications that can edit that file. 
+		We recommend you give <a href="https://play.google.com/store/apps/details?id=com.aor.droidedit.pro">DroidEdit</a> a try ;-)</p>
+
+		<p>If changes to the file are saved, you will notice that the status of that icon changed. That means that the file as uncommitted
+		changes. Before committing those changes, the file needs to be staged.</p>
+
+		<h3 id="staging">Staging changes</h3>
+
+		<p>After changing a file, you need to stage the change before committing it. To do this, first do a long press on the file name until
+		the action mode bar appears. Then select the <em>stage</em> icon.</p>
+
+		<p>The possible action icons in the action mode bar are the following:</p>
+		
+		<p>
+			<img src="file:///android_res/drawable/ic_action_stage.png" class="list">
+			Stage a file change. <br>The equivalent to <span class="git">git add &lt;file&gt;</span>.
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_action_unstage.png" class="list">
+			Unstage a file. <br>The equivalent to <span class="git">git reset HEAD &lt;file&gt;</span>. 
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_action_remove.png" class="list">
+			Remove a file. <br>The equivalent to <span class="git">git rm &lt;file&gt;</span>. 
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_action_delete.png" class="list">
+			Delete a file. <br>The equivalent to <span class="git">rm &lt;file&gt;</span>. 
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_action_revert_file.png" class="list">
+			Revert a file. <br>The equivalent to <span class="git">git checkout &lt;file&gt;</span>. 
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_action_diff_file.png" class="list">
+			Compare a modified file with the head revision. <br>The equivalent to <span class="git">git diff HEAD &lt;file&gt;</span>. 
+		</p>
+		
+		<h3 id="icons">File status icons</h3>
+		
+		<p>Files have different icons in front of them indicating their current status:</p>
+
+		<p>
+			<img src="file:///android_res/drawable/ic_commited.png" class="list">
+			File is committed.
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_modified.png" class="list">
+			File has been modified but not yet staged.
+		</p>
+		<p>		
+			<img src="file:///android_res/drawable/ic_changed.png" class="list">
+			File has been modified and staged.
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_changed_modified.png" class="list">
+			File has been modified, staged and then modified again. Some modification are staged
+			and others are not.
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_untracked.png" class="list">
+			File is untracked.
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_added.png" class="list">
+			File was untracked and has been added to the staging area.
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_removed.png" class="list">
+			File has been removed from the index.
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_missing.png" class="list">
+			File is tracked but is missing from the working directory.
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_ignored.png" class="list">
+			File is ignored as per the .gitignore file.
+		</p>
+		<p>
+			<img src="file:///android_res/drawable/ic_conflicting.png" class="list">
+			File has conflicts.
+		</p>
+		
+		<h3 id="committing">Committing</h3>
+		
+		<img src="file:///android_res/drawable/ic_action_commit.png" class="fab">
+		<p>To commit staged changes, just press the <em>commit</em> action button. This button only
+		appears when there are staged changes to commit.</p>
+
+		<p>If you haven't done it already, Pocket Git will ask for your author name and email.</p>
+		
+		<p>In the commit dialog, verify which files are being committed and type your commit message. 
+		When finished, press <em>commit</em> to commit your changes.</p>
+
+		<p>The equivalent to <span class="git">git commit -m &lt;message&gt;</span>.</p>
+
+		<h3 id="pushing">Pushing and Pulling</h3>
+		
+		<img src="file:///android_res/drawable/ic_action_remotes.png" class="actionbar">
+		<p>To push or pull your changes into the remote repository, just press the <em>remotes</em> icon and 
+		then select the desired operation (<em>pull</em> or <em>push</em>).</p> 
+
+		<img src="file:///android_res/drawable/ic_action_push.png" class="listview">
+		<p>By selecting push, commited changes are sent to the remote repository. At the moment it
+		isn't possible to select another remote or refspec. Managing remotes and refspecs will be added 
+		to Pocket Git in a future update.
+
+		<p>The equivalent to <span class="git">git push</span>.</p>
+
+		<img src="file:///android_res/drawable/ic_action_pull.png" class="listview">
+		<p>By selecting pull, changes from the remote repository are incorporated into the current branch. 
+		At the moment it isn't possible to select another remote or refspec. Managing remotes and refspecs will be added 
+		to Pocket Git in a future update.
+
+		<p>The equivalent to <span class="git">git pull</span>.</p>
+
+		<p>Both commands initialize a notification to track the command progress.</p>
+		
+		<h3 id="branches">Checkout branches</h3>
+		
+		<p>To checkout other branches, simply swipe from the left of the screen to reveal the branch
+		navigation drawer.</p>
+		
+		<p>In the top of the drawer, a switch allows you to change between local and remote branches.</p>
+		
+		<p>Pressing on a local branch will checkout that branch.</p>
+		
+		<p>The equivalent to <span class="git">git checkout &lt;branch&gt;</span>.</p>
+		
+		<p>Pressing on a remote branch, you will be asked for the name of the local branch to be created.
+		The remote branch will then be checked out into this new branch.</p>
+		
+		<p>The equivalent to <span class="git">git checkout -b &lt;branch&gt; --track &lt;remote&gt;/&lt;branch&gt;</span>.</p>
+		
+		<h3 id="merging">Merging branches</h3>
+		
+		<p>To merge two branches, first checkout the branch you want to merge into.</p>
+		
+		<img src="file:///android_res/drawable/ic_action_merge.png" class="listview">
+		<img src="file:///android_res/drawable/ic_action_branches.png" class="actionbar">
+		<p>Then, press the <em>branches</em> icon in the menu and select the <em>merge</em> branch option.</p>
+
+		<p>A list will appear where you can choose the branch you want to merge. After choosing the branch the merge will be done.</p>
+		
+		<p>The equivalent to <span class="git">git merge &lt;branch&gt;</span>.</p>
+		
+		<h3 id="add">Creating branches</h3>
+
+		<p>To create a branch, first make sure you checkout the branch you want your new branch to be based on.</p>
+		
+		<img src="file:///android_res/drawable/ic_action_create_branch.png" class="listview">
+		<img src="file:///android_res/drawable/ic_action_branches.png" class="actionbar">
+		<p>Then press the <em>branches</em> icon and select the </em>create</em> branch option.</p>
+
+		<p>A dialog asking for the new branch name will appear. Enter your new branch name and press <em>create</em>. A new branch will be created.</p>
+
+		<p>The equivalent to <span class="git">git checkout -b &lt;branch&gt;</span>.</p>
+
+		<h3 id="remove">Removing branches</h3>
+		
+		<p>To remove a branch, first make sure you haven't that branch checked out.</p>
+		
+		<img src="file:///android_res/drawable/ic_action_delete_branch.png" class="listview">
+		<img src="file:///android_res/drawable/ic_action_branches.png" class="actionbar">
+		<p>Then press the <em>branches</em> icon and select the <em>delete</em> branch option.</p>
+
+		<p>The equivalent to <span class="git">git branch -d &lt;branch&gt;</span>.</p>
+		
+		<h3 id="revert">Reverting changes</h3>
+
+		<p>To revert a change to just some files, start by selecting them using long press on a file name to initiate a selection.</p>
+		
+		<img src="file:///android_res/drawable/ic_action_revert_file.png" class="actionbar">
+		<p>After the action mode bar appears, just press the revert icon to revert the selected files to their previous version.</p>
+
+		<p>The equivalent to <span class="git">git checkout &lt;file&gt;</span></p>
+
+		<img src="file:///android_res/drawable/ic_action_reset.png" class="listview">
+		<img src="file:///android_res/drawable/ic_action_branches.png" class="actionbar">
+		<p>To revert the whole repository to the previous version, press the <em>branches</em> icon and select the <em>revert</em> option. The whole repository will be reverted to the previous version.</p>
+		
+		<p>The equivalent to <span class="git">git reset --hard HEAD</span></p>
+
+		<h3 id="log">Viewing the graphical log</h3>
+		
+		<img src="file:///android_res/drawable/ic_action_log.png" class="actionbar">
+		<p>To view the graphical log just select the <em>log</em> option in the menu.</p>
+		
+		<h3 id="checkout">Inspecting a commit</h3>
+
+		<p>When viewing the graphical log, you can click on a specific commit to further inspect it.</p>
+
+		<p>When inspecting a commit you will be able to see commit information, the complete commit message as well as the list of files modified in that commit.</p>
+
+		<h3 id="checkout">Checking out a commit</h3>
+
+		<img src="file:///android_res/drawable/ic_action_checkout.png" class="actionbar">
+		<p>When inspecting a commit, you can press the <em>checkout</em> icon to checkout that specific commit.</p>
+
+		<p>The equivalent to <span class="git">git checkout &lt;commit&gt;</span></p>
+		
+		<h3 id="diff">Seeing a diff</h3>
+
+		<p>When inspecting a commit you will be able to press a changed file's name to see the differences introduced by that specific commit.</p>		
+
+		<img src="file:///android_res/drawable/ic_action_diff_file.png" class="actionbar">
+		<p>When a single modified file is selected, you can press the differences icon to compare the file with the HEAD version.</p>		
+
+		<p>In the commit dialog, pressing a staged file allows you to compare the file with the HEAD version.</p>		
+	</body>
+</html>	

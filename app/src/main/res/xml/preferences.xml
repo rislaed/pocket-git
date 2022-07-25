@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:aapt="http://schemas.android.com/aapt">
+	<PreferenceCategory
+		android:title="Identification">
+		<EditTextPreference
+			android:title="Author Name"
+			android:key="pref_default_author"
+			android:dialogTitle="Author Name" />
+		<EditTextPreference
+			android:title="Author Email"
+			android:key="pref_default_email"
+			android:dialogTitle="Author Email"
+			android:inputType="textEmailAddress" />
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="Appearance">
+		<SwitchPreference
+			android:title="Use Roboto Font"
+			android:key="pref_roboto_font"
+			android:defaultValue="true" />
+		<SwitchPreference
+			android:title="Gravatar Support"
+			android:key="pref_gravatar"
+			android:defaultValue="true" />
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="Defaults">
+		<Preference
+			android:title="Default Directory"
+			android:key="pref_default_directory"
+			android:dialogTitle="Default Directory" />
+		<Preference
+			android:title="Manage external storage"
+			android:key="pref_manage_external_storage" />
+	</PreferenceCategory>
+</PreferenceScreen>

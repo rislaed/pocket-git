@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:id="@+id/main" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include layout="@layout/widget_toolbar"/>
+    <include layout="@layout/widget_progress_bar"/>
+    <androidx.drawerlayout.widget.DrawerLayout android:id="@+id/drawer_layout" android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="match_parent">
+            <LinearLayout android:id="@+id/parent_folder" android:padding="16dp" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <ImageView android:layout_width="wrap_content" android:layout_height="match_parent" android:src="@drawable/ic_up" android:contentDescription="@string/label_folder"/>
+                <TextView android:textAppearance="?android:attr/textAppearanceMedium" android:gravity="center_vertical" android:id="@+id/parent_name" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="16dp"/>
+            </LinearLayout>
+            <ListView android:id="@+id/list_files" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+        </LinearLayout>
+        <include layout="@layout/drawer_branches"/>
+    </androidx.drawerlayout.widget.DrawerLayout>
+</LinearLayout>

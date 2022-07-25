@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:background="?android:attr/activatedBackgroundIndicator" android:padding="8dp" android:layout_width="match_parent" android:layout_height="match_parent" android:animateLayoutChanges="true">
+    <TextView android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" android:ellipsize="middle" android:id="@+id/text_message" android:layout_width="match_parent" android:layout_height="wrap_content" android:maxLines="1"/>
+    <TextView android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" android:ellipsize="middle" android:id="@+id/text_date" android:layout_width="match_parent" android:layout_height="wrap_content" android:maxLines="1"/>
+</LinearLayout>

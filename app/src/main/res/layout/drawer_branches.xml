@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:layout_gravity="start" android:orientation="vertical" android:id="@+id/left_drawer" android:background="?attr/colorSurface" android:padding="16dp" android:clickable="true" android:layout_width="240dp" android:layout_height="match_parent" android:divider="@android:color/transparent" android:choiceMode="singleChoice">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="vertical" android:paddingTop="16dp" android:paddingBottom="16dp" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+            <TextView android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/label_branches"/>
+            <TextView android:textAppearance="?android:attr/textAppearanceSmall" android:id="@+id/text_local_remote" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Local"/>
+        </LinearLayout>
+        <androidx.appcompat.widget.SwitchCompat android:layout_gravity="center_vertical" android:id="@+id/toggle_remote" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textOn="R" android:textOff="L"/>
+    </LinearLayout>
+    <ListView android:id="@+id/list_branches" android:layout_width="match_parent" android:layout_height="0dp" android:dividerHeight="0dp" android:layout_weight="1"/>
+</LinearLayout>
