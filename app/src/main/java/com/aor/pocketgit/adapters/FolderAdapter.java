@@ -22,7 +22,7 @@ public class FolderAdapter extends ArrayAdapter<File> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_folder, parent, false);
             FontUtils.setRobotoFont(getContext(), convertView);
         }
-        File file = (File) getItem(position);
+        File file = getItem(position);
         ((TextView) convertView.findViewById(R.id.file_name)).setText(file.getName());
         if (file.isDirectory()) {
             ((ImageView) convertView.findViewById(R.id.file_icon)).setImageResource(R.drawable.ic_folder);

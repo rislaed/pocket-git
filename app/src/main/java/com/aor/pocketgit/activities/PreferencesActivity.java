@@ -1,9 +1,9 @@
 package com.aor.pocketgit.activities;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 import com.aor.pocketgit.R;
 
 public class PreferencesActivity extends UpdatableActivity {
@@ -16,16 +16,16 @@ public class PreferencesActivity extends UpdatableActivity {
 
     protected void onResume() {
         super.onResume();
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener((PreferencesFragment) getFragmentManager().findFragmentById(R.id.fragment_preferences));
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener((PreferencesFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_preferences));
     }
 
     protected void onPause() {
         super.onPause();
-        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener((PreferencesFragment) getFragmentManager().findFragmentById(R.id.fragment_preferences));
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener((PreferencesFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_preferences));
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == 16908332) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);

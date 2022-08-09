@@ -22,7 +22,7 @@ public class GitFileAdapter extends ArrayAdapter<GitFile> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_git_file, parent, false);
             FontUtils.setRobotoFont(getContext(), convertView);
         }
-        GitFile file = (GitFile) getItem(position);
+        GitFile file = getItem(position);
         ((TextView) convertView.findViewById(R.id.file_name)).setText(file.getName());
         if (file.isDirectory()) {
             ((ImageView) convertView.findViewById(R.id.file_icon)).setImageResource(R.drawable.ic_folder);

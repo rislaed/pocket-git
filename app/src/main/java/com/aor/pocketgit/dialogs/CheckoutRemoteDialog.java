@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aor.pocketgit.R;
 import com.aor.pocketgit.tasks.CheckoutRemoteTask;
@@ -28,8 +29,14 @@ public class CheckoutRemoteDialog {
         input.setText(remote.substring(remote.lastIndexOf(47) + 1));
         input.setInputType(145);
         ((TextView) dialogBranchName.findViewById(R.id.text_content)).setText("Enter the new branch name");
-        FontUtils.setRobotoFont(this.mContext, new MaterialDialog.Builder(this.mContext).title((CharSequence) "Checkout remote").iconRes(R.drawable.ic_action_create_branch).customView(dialogBranchName, true).positiveText((int) R.string.button_ok).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this.mContext, new MaterialDialog.Builder(this.mContext)
+				.title((CharSequence) "Checkout remote")
+				.iconRes(R.drawable.ic_action_create_branch)
+				.customView(dialogBranchName, true)
+				.positiveText(R.string.button_ok)
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 String name = input.getText().toString().trim();
                 new CheckoutRemoteTask().setListener(CheckoutRemoteDialog.this.mListener).execute(new Object[]{repository, name, remote});
             }

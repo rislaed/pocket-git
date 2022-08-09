@@ -25,9 +25,9 @@ public class ProjectAdapter extends ArrayAdapter<Project> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_project, parent, false);
             FontUtils.setRobotoFont(getContext(), convertView);
         }
-        ((TextView) convertView.findViewById(R.id.project_name)).setText(((Project) getItem(position)).getName());
-        ((TextView) convertView.findViewById(R.id.project_url)).setText(((Project) getItem(position)).getUrl());
-        Project project = (Project) getItem(position);
+        ((TextView) convertView.findViewById(R.id.project_name)).setText(getItem(position).getName());
+        ((TextView) convertView.findViewById(R.id.project_url)).setText(getItem(position).getUrl());
+        Project project = getItem(position);
         ImageView icon = (ImageView) convertView.findViewById(R.id.image_state);
         RotateAnimation rotateAnimation = new RotateAnimation(0.0f, 360.0f, 1, 0.5f, 1, 0.5f);
         rotateAnimation.setRepeatCount(-1);

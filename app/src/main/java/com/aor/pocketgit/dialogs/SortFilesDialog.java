@@ -2,11 +2,11 @@ package com.aor.pocketgit.dialogs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import androidx.preference.PreferenceManager;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aor.pocketgit.R;
 import com.aor.pocketgit.utils.FileComparator;
@@ -30,7 +30,7 @@ public class SortFilesDialog {
     }
 
     public SortFilesDialog showDialog() {
-        final MaterialDialog dialog = new MaterialDialog.Builder(this.mContext).title((CharSequence) "Sort Files").iconRes(R.drawable.ic_action_sort_files).customView(LayoutInflater.from(this.mContext).inflate(R.layout.dialog_sort_files, (ViewGroup) null), false).positiveText((int) R.string.button_close).show();
+        final MaterialDialog dialog = new MaterialDialog.Builder(this.mContext).title((CharSequence) "Sort Files").iconRes(R.drawable.ic_action_sort_files).customView(LayoutInflater.from(this.mContext).inflate(R.layout.dialog_sort_files, (ViewGroup) null), false).positiveText(R.string.button_close).show();
         dialog.findViewById(R.id.action_sort_name).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (SortFilesDialog.this.mSortType == FileComparator.SORT_NAME) {

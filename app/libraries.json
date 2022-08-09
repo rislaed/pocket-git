@@ -6,6 +6,12 @@
     "versionName": "1.4.2"
   },
   {
+    "artifactId": "preference",
+    "excludes": [],
+    "groupId": "androidx.preference",
+    "versionName": "1.1.1"
+  },
+  {
     "artifactId": "material",
     "excludes": [],
     "groupId": "com.google.android.material",
@@ -28,5 +34,11 @@
     "excludes": [],
     "groupId": "com.afollestad.material-dialogs",
     "versionName": "0.9.6.0"
+  },
+  {
+    "artifactId": "glide",
+    "excludes": [],
+    "groupId": "com.github.bumptech.glide",
+    "versionName": "4.13.2"
   }
 ]

@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
+<androidx.preference.PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:aapt="http://schemas.android.com/aapt">
-	<PreferenceCategory
+	<androidx.preference.PreferenceCategory
 		android:title="Identification">
-		<EditTextPreference
+		<androidx.preference.EditTextPreference
 			android:title="Author Name"
 			android:key="pref_default_author"
 			android:dialogTitle="Author Name" />
-		<EditTextPreference
+		<androidx.preference.EditTextPreference
 			android:title="Author Email"
 			android:key="pref_default_email"
 			android:dialogTitle="Author Email"
 			android:inputType="textEmailAddress" />
-	</PreferenceCategory>
-	<PreferenceCategory
+	</androidx.preference.PreferenceCategory>
+	<androidx.preference.PreferenceCategory
 		android:title="Appearance">
-		<SwitchPreference
+		<androidx.preference.SwitchPreference
 			android:title="Use Roboto Font"
 			android:key="pref_roboto_font"
 			android:defaultValue="true" />
-		<SwitchPreference
+		<androidx.preference.SwitchPreference
 			android:title="Gravatar Support"
 			android:key="pref_gravatar"
 			android:defaultValue="true" />
-	</PreferenceCategory>
-	<PreferenceCategory
+	</androidx.preference.PreferenceCategory>
+	<androidx.preference.PreferenceCategory
 		android:title="Defaults">
-		<Preference
+		<androidx.preference.Preference
 			android:title="Default Directory"
 			android:key="pref_default_directory"
 			android:dialogTitle="Default Directory" />
-		<Preference
+		<androidx.preference.Preference
 			android:title="Manage external storage"
 			android:key="pref_manage_external_storage" />
-	</PreferenceCategory>
-</PreferenceScreen>
+	</androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>

@@ -15,6 +15,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.MergeResult;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 
@@ -40,31 +41,40 @@ public class MergeDialog {
             ListBranchCommand branchList = new Git(repository).branchList();
             branchList.setListMode(ListBranchCommand.ListMode.ALL);
             List<Ref> branches = branchList.call();
-            List<Ref> selectableBranches = new ArrayList<>();
+            final List<Ref> selectableBranches = new ArrayList<>();
             for (Ref ref : branches) {
                 if (!ref.getName().equals("HEAD") && !ref.getName().equals(currentBranch)) {
                     selectableBranches.add(ref);
                 }
             }
-            final ArrayAdapter<Ref> adapter = new BranchArrayAdapter(this.mContext, selectableBranches);
-            final MaterialDialog dialog = new MaterialDialog.Builder(this.mContext).title((CharSequence) "Select Branch to Merge").iconRes(R.drawable.ic_action_merge)/* .adapter(adapter, new MaterialDialog.ListCallback() {
-                public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
-                }
-            }) */.negativeText(R.string.button_cancel).show();
-            /* dialog.getRecyclerView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                    Ref ref = adapter.getItem(position);
-                    try {
-                        MergeCommand merge = new Git(repository).merge();
-                        merge.include(ref);
-                        MergeDialog.this.mListener.mergeResult(merge.call());
-                    } catch (Exception e) {
-                        Log.e("Pocket Git", "", e);
-                        MergeDialog.this.mListener.mergeFailed(e);
-                    }
-                    dialog.dismiss();
-                }
-            }); */
+			List<String> namesOfBranches = new ArrayList<>();
+			for (Ref ref : selectableBranches) {
+				String name = ref.getName();
+				if (name.startsWith(Constants.R_HEADS)) {
+					name = name.substring(11);
+				}
+				namesOfBranches.add(name);
+			}
+            // final ArrayAdapter<Ref> adapter = new BranchArrayAdapter(this.mContext, selectableBranches);
+            final MaterialDialog dialog = new MaterialDialog.Builder(this.mContext)
+				.title((CharSequence) "Select Branch to Merge")
+				.iconRes(R.drawable.ic_action_merge)
+				.items(namesOfBranches)
+				.itemsCallback(new MaterialDialog.ListCallback() {
+					@Override
+					public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+						Ref ref = selectableBranches.get(which);
+						try {
+							MergeCommand merge = new Git(repository).merge();
+							merge.include(ref);
+							MergeDialog.this.mListener.mergeResult(merge.call());
+						} catch (Exception e) {
+							Log.e("Pocket Git", "", e);
+							MergeDialog.this.mListener.mergeFailed(e);
+						}
+					}
+				})
+				.negativeText(R.string.button_cancel).show();
             FontUtils.setRobotoFont(this.mContext, dialog.getWindow().getDecorView());
         } catch (Exception e) {
             Log.e("Pocket Git", "", e);

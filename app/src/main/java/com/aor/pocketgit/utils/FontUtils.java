@@ -2,17 +2,17 @@ package com.aor.pocketgit.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.preference.PreferenceManager;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FontUtils {
-    private static Map<String, String> fontMap = new HashMap();
+    private static Map<String, String> fontMap = new HashMap<>();
     private static Typeface sSourceCode;
-    private static Map<String, Typeface> typefaceCache = new HashMap();
+    private static Map<String, Typeface> typefaceCache = new HashMap<>();
 
     public interface FontTypes {
         public static final String BOLD = "BOLD";

@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aor.pocketgit.R;
 import com.aor.pocketgit.adapters.RemoteAdapter;
@@ -37,7 +39,7 @@ public class RemotesActivity extends UpdatableActivity implements AdapterView.On
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_remotes);
+        setContentView(R.layout.activity_remotes);
         setupFAB();
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
         String id = getIntent().getStringExtra("id");
@@ -60,11 +62,17 @@ public class RemotesActivity extends UpdatableActivity implements AdapterView.On
     private void setupFAB() {
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        new FloatingActionButton.Builder(this).withColor(typedValue.data).withDrawable(getResources().getDrawable(R.drawable.ic_action_add)).withMargins(0, 0, 16, 16).create().setOnClickListener(new View.OnClickListener() {
+        new FloatingActionButton.Builder(this).withColor(typedValue.data).withDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_add)).withMargins(0, 0, 16, 16).create().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 final View viewCreateRemote = RemotesActivity.this.getLayoutInflater().inflate(R.layout.dialog_create_remote, (ViewGroup) null);
-                FontUtils.setRobotoFont(RemotesActivity.this, new MaterialDialog.Builder(RemotesActivity.this).title((CharSequence) "Add Remote").iconRes(R.drawable.ic_add).positiveText((int) R.string.button_create).negativeText((int) R.string.button_cancel).customView(viewCreateRemote, false).callback(new MaterialDialog.ButtonCallback() {
-                    public void onPositive(MaterialDialog dialog) {
+                FontUtils.setRobotoFont(RemotesActivity.this, new MaterialDialog.Builder(RemotesActivity.this)
+						.title((CharSequence) "Add Remote")
+						.iconRes(R.drawable.ic_action_branches)
+						.positiveText(R.string.button_create)
+						.negativeText(R.string.button_cancel)
+						.customView(viewCreateRemote, false)
+						.onPositive(new MaterialDialog.SingleButtonCallback() {
+					public void onClick(MaterialDialog dialog, DialogAction which) {
                         try {
                             StoredConfig config = GitUtils.getRepository(RemotesActivity.this.mProject).getConfig();
                             String name = ((EditText) viewCreateRemote.findViewById(R.id.edit_name)).getText().toString().trim().toLowerCase();
@@ -98,7 +106,7 @@ public class RemotesActivity extends UpdatableActivity implements AdapterView.On
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == 16908332) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);

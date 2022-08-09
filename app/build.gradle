@@ -27,8 +27,11 @@ android {
 
 dependencies {
     implementation "androidx.appcompat:appcompat:1.4.2"
+	// AndroidX Preference 1.2 and later uses non-lightweight kotlin
+	implementation "androidx.preference:preference:1.1.1"
     implementation "com.google.android.material:material:1.6.1"
     implementation "com.github.castorflex.smoothprogressbar:library:1.1.0"
 	implementation "org.eclipse.jgit:org.eclipse.jgit.ssh.jsch:6.2.0.202206071550-r"
 	implementation "com.afollestad.material-dialogs:core:0.9.6.0"
+	implementation "com.github.bumptech.glide:glide:4.13.2"
 }

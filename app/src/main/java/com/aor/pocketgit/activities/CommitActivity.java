@@ -2,7 +2,6 @@ package com.aor.pocketgit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,12 +11,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 import com.aor.pocketgit.R;
 import com.aor.pocketgit.adapters.DiffAdapter;
 import com.aor.pocketgit.data.Project;
 import com.aor.pocketgit.database.ProjectsDataSource;
 import com.aor.pocketgit.utils.GitUtils;
 import com.aor.pocketgit.utils.MD5Util;
+import com.bumptech.glide.Glide;
 import java.io.IOException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ConfigConstants;
@@ -70,9 +71,9 @@ public class CommitActivity extends UpdatableActivity {
                 }
             }
         });
-        // if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_gravatar", true)) {
-            // Picasso.with(this).load("http://www.gravatar.com/avatar/" + MD5Util.md5Hex(this.mCommit.getAuthorIdent().getEmailAddress()) + "?s=204&d=404").into((ImageView) findViewById(R.id.image_photo));
-        // }
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_gravatar", true)) {
+            Glide.with(this).load("https://www.gravatar.com/avatar/" + MD5Util.md5Hex(this.mCommit.getAuthorIdent().getEmailAddress()) + "?s=512&d=404").into((ImageView) findViewById(R.id.image_photo));
+        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -88,7 +89,7 @@ public class CommitActivity extends UpdatableActivity {
             setResult(1, intent);
             finish();
         }
-        if (item.getItemId() == 16908332) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);

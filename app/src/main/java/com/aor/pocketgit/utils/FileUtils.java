@@ -26,6 +26,6 @@ public class FileUtils {
                 }
             }
         }
-        return (File[]) files.toArray(new File[0]);
+        return files.toArray(new File[0]);
     }
 }

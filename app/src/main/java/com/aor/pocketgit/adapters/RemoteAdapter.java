@@ -21,7 +21,7 @@ public class RemoteAdapter extends ArrayAdapter<RemoteConfig> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_remote, parent, false);
             FontUtils.setRobotoFont(getContext(), convertView);
         }
-        RemoteConfig remote = (RemoteConfig) getItem(position);
+        RemoteConfig remote = getItem(position);
         ((TextView) convertView.findViewById(R.id.remote_name)).setText(remote.getName());
         TextView remoteUrl = (TextView) convertView.findViewById(R.id.remote_url);
         if (remote.getURIs().size() == 0) {
@@ -37,7 +37,7 @@ public class RemoteAdapter extends ArrayAdapter<RemoteConfig> {
             convertView = LayoutInflater.from(getContext()).inflate(17367049, parent, false);
             FontUtils.setRobotoFont(getContext(), convertView);
         }
-        ((TextView) convertView.findViewById(16908308)).setText(((RemoteConfig) getItem(position)).getName());
+        ((TextView) convertView.findViewById(16908308)).setText(getItem(position).getName());
         return convertView;
     }
 

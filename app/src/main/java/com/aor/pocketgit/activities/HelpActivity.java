@@ -9,15 +9,15 @@ import com.aor.pocketgit.R;
 public class HelpActivity extends UpdatableActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_help);
+        setContentView(R.layout.activity_help);
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
-        getSupportActionBar().setTitle((int) R.string.title_activity_help);
+        getSupportActionBar().setTitle(R.string.title_activity_help);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((WebView) findViewById(R.id.webview_help)).loadUrl("file:///android_asset/help/index.html");
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == 16908332) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);

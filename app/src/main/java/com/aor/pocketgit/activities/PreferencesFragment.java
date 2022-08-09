@@ -6,23 +6,23 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceGroup;
-import android.preference.PreferenceManager;
+import androidx.preference.Preference;
+import androidx.preference.EditTextPreference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceGroup;
+import androidx.preference.PreferenceManager;
 import android.provider.Settings;
 import android.widget.Toast;
 import com.aor.pocketgit.R;
 
-public class PreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class PreferencesFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         initSummary(getPreferenceScreen());
         findPreference("pref_default_directory").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                String localPath = PreferenceManager.getDefaultSharedPreferences(PreferencesFragment.this.getActivity()).getString("pref_default_directory", Environment.getExternalStorageDirectory().getAbsolutePath() + "/Git");
+                String localPath = PreferenceManager.getDefaultSharedPreferences(PreferencesFragment.this.getActivity()).getString("pref_default_directory", getActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath());
                 Intent intent = new Intent(PreferencesFragment.this.getActivity(), PickerActivity.class);
                 intent.putExtra("local_path", localPath);
                 intent.putExtra("request_code", 1);
@@ -30,8 +30,8 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
                 return true;
             }
         });
-		Preference manageExternalStoragePref = findPreference("pref_manage_external_storage");
-		manageExternalStoragePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        Preference manageExternalStoragePref = findPreference("pref_manage_external_storage");
+        manageExternalStoragePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 try {
                     Uri uri = Uri.parse("package:" + getActivity().getPackageName());
@@ -70,7 +70,7 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
             p.setSummary(((EditTextPreference) p).getText());
         }
         if (p != null && p.getKey().equals("pref_default_directory")) {
-			p.setSummary(PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("pref_default_directory", Environment.getExternalStorageDirectory().getAbsolutePath() + "/Git"));
+			p.setSummary(PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("pref_default_directory", getActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath()));
         }
     }
 
@@ -84,5 +84,10 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
         		Toast.makeText(getActivity(), "Permission granted.", Toast.LENGTH_LONG).show();
         	}
         }
-    }
+	}
+
+	@Override
+	public void onCreatePreferences(Bundle savedInstanceState, String type) {
+		
+	}
 }

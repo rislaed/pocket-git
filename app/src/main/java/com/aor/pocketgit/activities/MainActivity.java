@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -19,6 +18,8 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.preference.PreferenceManager;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aor.pocketgit.R;
 import com.aor.pocketgit.adapters.ProjectAdapter;
@@ -129,7 +130,7 @@ public class MainActivity extends UpdatableActivity implements ActivityCompat.On
     private void setupFAB() {
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        new FloatingActionButton.Builder(this).withColor(typedValue.data).withDrawable(getResources().getDrawable(R.drawable.ic_action_add)).withMargins(0, 0, 16, 16).create().setOnClickListener(new View.OnClickListener() {
+        new FloatingActionButton.Builder(this).withColor(typedValue.data).withDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_add)).withMargins(0, 0, 16, 16).create().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 MainActivity.this.startActivityForResult(new Intent(MainActivity.this, ProjectActivity.class), 1);
             }
@@ -155,16 +156,27 @@ public class MainActivity extends UpdatableActivity implements ActivityCompat.On
     }
 
     private void prepareCloneRepository(final Project project) {
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((int) R.string.message_clone_repository).iconRes(R.drawable.ic_action_clone).content((int) R.string.message_clone_now).positiveText((int) R.string.button_clone).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title(R.string.message_clone_repository)
+				.iconRes(R.drawable.ic_action_clone)
+				.content(R.string.message_clone_now)
+				.positiveText(R.string.button_clone)
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 final File path = new File(project.getLocalPath());
                 if (path.exists() && !path.isDirectory()) {
                     Toast.makeText(MainActivity.this, "Invalid local path", 0).show();
                 } else if (!path.exists() || !path.isDirectory() || path.list() == null || path.list().length == 0) {
                     MainActivity.this.cloneRepository(project);
                 } else {
-                    FontUtils.setRobotoFont(MainActivity.this, new MaterialDialog.Builder(MainActivity.this).title((CharSequence) "Directory not Empty").content((CharSequence) "Delete all files to continue?").positiveText((int) R.string.button_delete).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-                        public void onPositive(MaterialDialog dialog) {
+                    FontUtils.setRobotoFont(MainActivity.this, new MaterialDialog.Builder(MainActivity.this)
+							.title((CharSequence) "Directory not Empty")
+							.content((CharSequence) "Delete all files to continue?")
+							.positiveText(R.string.button_delete)
+							.negativeText(R.string.button_cancel)
+							.onPositive(new MaterialDialog.SingleButtonCallback() {
+						public void onClick(MaterialDialog dialog, DialogAction which) {
                             MainActivity.this.deleteAllFilesIn(path);
                             MainActivity.this.cloneRepository(project);
                         }
@@ -235,7 +247,7 @@ public class MainActivity extends UpdatableActivity implements ActivityCompat.On
                     }
                     datasource.close();
                     if (existing == null) {
-                        File directory = new File(PreferenceManager.getDefaultSharedPreferences(this).getString("pref_default_directory", Environment.getExternalStorageDirectory().getAbsolutePath() + "/Git"), project);
+                        File directory = new File(PreferenceManager.getDefaultSharedPreferences(this).getString("pref_default_directory", getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath()), project);
                         final Intent createIntent = new Intent(this, ProjectActivity.class);
                         createIntent.putExtra(ConfigConstants.CONFIG_KEY_NAME, project);
                         createIntent.putExtra("local_path", directory.getAbsolutePath());
@@ -283,7 +295,7 @@ public class MainActivity extends UpdatableActivity implements ActivityCompat.On
         int canRead = ContextCompat.checkSelfPermission(this, "android.permission.READ_EXTERNAL_STORAGE");
         int canWrite = ContextCompat.checkSelfPermission(this, "android.permission.WRITE_EXTERNAL_STORAGE");
         if (canRead == -1 || canWrite == -1) {
-            ActivityCompat.requestPermissions(this, new String[]{"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"}, 1);
+            ActivityCompat.requestPermissions(this, new String[] { "android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE" }, 1);
         }
     }
 
@@ -317,8 +329,14 @@ public class MainActivity extends UpdatableActivity implements ActivityCompat.On
                 ((CheckBox) viewDeleteFiles.findViewById(R.id.check_delete_files)).toggle();
             }
         });
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((CharSequence) "Delete Project").iconRes(R.drawable.ic_delete).customView(viewDeleteFiles, false).positiveText((int) R.string.button_delete).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title((CharSequence) "Delete Project")
+				.iconRes(R.drawable.ic_delete)
+				.customView(viewDeleteFiles, false)
+				.positiveText(R.string.button_delete)
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 MainActivity.this.deleteProjects(ids, ((CheckBox) viewDeleteFiles.findViewById(R.id.check_delete_files)).isChecked(), ((CheckBox) viewDeleteFiles.findViewById(R.id.check_delete_project)).isChecked());
             }
         }).show().getWindow().getDecorView());

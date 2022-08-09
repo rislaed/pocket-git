@@ -24,5 +24,6 @@ public class PocketDbHelper extends SQLiteOpenHelper {
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		
     }
 }

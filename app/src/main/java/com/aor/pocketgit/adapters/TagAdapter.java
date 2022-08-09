@@ -33,7 +33,7 @@ public class TagAdapter extends ArrayAdapter<GitUtils.Tag> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_revtag, parent, false);
             FontUtils.setRobotoFont(getContext(), convertView);
         }
-        final GitUtils.Tag tag = (GitUtils.Tag) getItem(position);
+        final GitUtils.Tag tag = getItem(position);
         ((TextView) convertView.findViewById(R.id.text_name)).setText(tag.getName());
         TextView tagMessage = (TextView) convertView.findViewById(R.id.text_message);
         tagMessage.setText(tag.getMessage());

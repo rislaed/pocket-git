@@ -22,7 +22,7 @@ public class StashAdapter extends ArrayAdapter<RevCommit> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_revcommit, parent, false);
             FontUtils.setRobotoFont(getContext(), convertView);
         }
-        RevCommit revCommit = (RevCommit) getItem(position);
+        RevCommit revCommit = getItem(position);
         ((TextView) convertView.findViewById(R.id.text_message)).setText(revCommit.getShortMessage());
         ((TextView) convertView.findViewById(R.id.text_date)).setText(GitUtils.formatDate(revCommit.getCommitTime()));
         return convertView;

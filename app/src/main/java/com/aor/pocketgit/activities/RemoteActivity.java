@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aor.pocketgit.R;
 import com.aor.pocketgit.adapters.RefSpecAdapter;
@@ -40,7 +42,7 @@ public class RemoteActivity extends UpdatableActivity implements AbsListView.Mul
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_remote);
+        setContentView(R.layout.activity_remote);
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
         setupFAB();
         String id = getIntent().getStringExtra("id");
@@ -79,7 +81,7 @@ public class RemoteActivity extends UpdatableActivity implements AbsListView.Mul
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case 16908332:
+            case android.R.id.home:
             case R.id.action_cancel:
                 cancel();
                 break;
@@ -100,8 +102,14 @@ public class RemoteActivity extends UpdatableActivity implements AbsListView.Mul
     }
 
     private void cancel() {
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((CharSequence) "Close").iconRes(R.drawable.ic_close).content((CharSequence) "Close without saving?").positiveText((int) R.string.button_close).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title((CharSequence) "Close")
+				.iconRes(R.drawable.ic_close)
+				.content((CharSequence) "Close without saving?")
+				.positiveText(R.string.button_close)
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 RemoteActivity.this.finish();
             }
         }).show().getWindow().getDecorView());
@@ -116,11 +124,17 @@ public class RemoteActivity extends UpdatableActivity implements AbsListView.Mul
     private void setupFAB() {
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        new FloatingActionButton.Builder(this).withColor(typedValue.data).withDrawable(getResources().getDrawable(R.drawable.ic_action_add)).withMargins(0, 0, 16, 16).create().setOnClickListener(new View.OnClickListener() {
+        new FloatingActionButton.Builder(this).withColor(typedValue.data).withDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_add)).withMargins(0, 0, 16, 16).create().setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 final View viewCreateRefSpec = RemoteActivity.this.getLayoutInflater().inflate(R.layout.dialog_create_refspec, (ViewGroup) null);
-                FontUtils.setRobotoFont(RemoteActivity.this, new MaterialDialog.Builder(RemoteActivity.this).title((CharSequence) "Add RefSpec").iconRes(R.drawable.ic_add).positiveText((int) R.string.button_create).negativeText((int) R.string.button_cancel).customView(viewCreateRefSpec, false).callback(new MaterialDialog.ButtonCallback() {
-                    public void onPositive(MaterialDialog dialog) {
+                FontUtils.setRobotoFont(RemoteActivity.this, new MaterialDialog.Builder(RemoteActivity.this)
+						.title((CharSequence) "Add RefSpec")
+						.iconRes(R.drawable.ic_add)
+						.positiveText(R.string.button_create)
+						.negativeText(R.string.button_cancel)
+						.customView(viewCreateRefSpec, false)
+						.onPositive(new MaterialDialog.SingleButtonCallback() {
+					public void onClick(MaterialDialog dialog, DialogAction which) {
                         String refspec = ((EditText) viewCreateRefSpec.findViewById(R.id.edit_refspec)).getText().toString().trim().toLowerCase();
                         boolean fetch = ((RadioButton) viewCreateRefSpec.findViewById(R.id.radio_fetch)).isChecked();
                         if (refspec.trim().equals("")) {

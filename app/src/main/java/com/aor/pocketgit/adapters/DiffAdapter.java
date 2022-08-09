@@ -22,7 +22,7 @@ public class DiffAdapter extends ArrayAdapter<DiffEntry> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_diff, parent, false);
             FontUtils.setRobotoFont(getContext(), convertView);
         }
-        DiffEntry diff = (DiffEntry) getItem(position);
+        DiffEntry diff = getItem(position);
         ImageView iconType = (ImageView) convertView.findViewById(R.id.icon_type);
         if (diff.getChangeType() == DiffEntry.ChangeType.ADD) {
             iconType.setImageResource(R.drawable.ic_added);

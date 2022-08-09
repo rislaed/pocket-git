@@ -26,7 +26,7 @@ public class BlameLineAdapter extends ArrayAdapter<BlameLine> {
         } else {
             convertView.setLayoutParams(new AbsListView.LayoutParams(-1, -2));
         }
-        BlameLine blame = (BlameLine) getItem(position);
+        BlameLine blame = getItem(position);
         TextView lineText = (TextView) convertView.findViewById(R.id.text_line_text);
         lineText.setTypeface(FontUtils.getSourceCodeTypeface(getContext()));
         lineText.setText(blame.getLineText());

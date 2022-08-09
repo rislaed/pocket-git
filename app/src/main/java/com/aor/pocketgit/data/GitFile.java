@@ -26,7 +26,7 @@ public class GitFile {
 
     public GitFile(File file, String state) {
         this.mFile = file;
-        this.mStates = new HashSet();
+        this.mStates = new HashSet<>();
         this.mStates.add(state);
     }
 

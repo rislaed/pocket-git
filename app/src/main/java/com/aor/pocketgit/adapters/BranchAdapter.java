@@ -25,7 +25,7 @@ public class BranchAdapter extends ArrayAdapter<Ref> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_branch, parent, false);
             FontUtils.setRobotoFont(getContext(), convertView);
         }
-        Ref ref = (Ref) getItem(position);
+        Ref ref = getItem(position);
         String name = ref.getName();
         if (name.equals("HEAD")) {
             name = this.mCurrentBranch;

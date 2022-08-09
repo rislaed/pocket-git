@@ -2,7 +2,7 @@ package com.aor.pocketgit.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import com.aor.pocketgit.data.GitFile;
 import java.util.Comparator;
 

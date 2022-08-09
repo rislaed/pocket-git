@@ -11,7 +11,7 @@ import java.util.List;
 import org.eclipse.jgit.lib.ConfigConstants;
 
 public class ProjectsDataSource {
-    private String[] allColumns = {"id", ConfigConstants.CONFIG_KEY_NAME, "url", "local_path", "authentication", "username", "password", "privatekey", "state"};
+    private String[] allColumns = { "id", ConfigConstants.CONFIG_KEY_NAME, "url", "local_path", "authentication", "username", "password", "privatekey", "state" };
     private SQLiteDatabase database;
     private PocketDbHelper dbHelper;
 
@@ -65,16 +65,16 @@ public class ProjectsDataSource {
         values.put("username", username);
         values.put("password", password);
         values.put("privatekey", privateKey);
-        this.database.update("projects", values, "id = ?", new String[]{id});
+        this.database.update("projects", values, "id = ?", new String[] { id });
     }
 
     public void deleteProject(Integer id) {
-        this.database.delete("projects", "id = ?", new String[]{Integer.toString(id.intValue())});
+        this.database.delete("projects", "id = ?", new String[] { Integer.toString(id.intValue()) });
     }
 
     public Project getProject(String id) {
         Project project = null;
-        Cursor cursor = this.database.query("projects", this.allColumns, "id = ?", new String[]{id}, (String) null, (String) null, (String) null);
+        Cursor cursor = this.database.query("projects", this.allColumns, "id = ?", new String[] { id }, (String) null, (String) null, (String) null);
         cursor.moveToFirst();
         if (!cursor.isAfterLast()) {
             project = cursorToProject(cursor);
@@ -85,7 +85,7 @@ public class ProjectsDataSource {
 
     public Project getProjectFromURL(String url) {
         Project project = null;
-        Cursor cursor = this.database.query("projects", this.allColumns, "url = ?", new String[]{url}, (String) null, (String) null, (String) null);
+        Cursor cursor = this.database.query("projects", this.allColumns, "url = ?", new String[] { url }, (String) null, (String) null, (String) null);
         cursor.moveToFirst();
         if (!cursor.isAfterLast()) {
             project = cursorToProject(cursor);

@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aor.pocketgit.R;
 import com.aor.pocketgit.adapters.FolderAdapter;
@@ -36,18 +37,18 @@ public class PickerActivity extends UpdatableActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_folder);
+        setContentView(R.layout.activity_folder);
         setSupportActionBar((Toolbar) findViewById(R.id.action_bar));
         this.mRequestCode = getIntent().getIntExtra("request_code", 1);
         if (this.mRequestCode == 2) {
-            getSupportActionBar().setTitle((int) R.string.title_activity_file_picker);
+            getSupportActionBar().setTitle(R.string.title_activity_file_picker);
         }
         String localPath = getIntent().getStringExtra("local_path");
         if (localPath != null && new File(localPath).isDirectory()) {
             this.mCurrentFolder = new File(localPath);
         }
         if (this.mCurrentFolder == null) {
-            this.mCurrentFolder = Environment.getExternalStorageDirectory();
+            this.mCurrentFolder = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         }
         final ListView listFolders = (ListView) findViewById(R.id.list_folders);
         refreshFiles(listFolders);
@@ -135,14 +136,20 @@ public class PickerActivity extends UpdatableActivity {
 
     @SuppressLint({"InflateParams"})
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == 16908332) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         if (item.getItemId() == R.id.action_new_folder) {
             final View dialogCreateFolder = LayoutInflater.from(this).inflate(R.layout.dialog_single_input, (ViewGroup) null);
             ((TextView) dialogCreateFolder.findViewById(R.id.text_content)).setText("Enter folder name");
-            FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((CharSequence) "New Folder").iconRes(R.drawable.ic_folder).customView(dialogCreateFolder, false).positiveText((CharSequence) "Create").negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-                public void onPositive(MaterialDialog dialog) {
+            FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+					.title((CharSequence) "New Folder")
+					.iconRes(R.drawable.ic_action_add_folder)
+					.customView(dialogCreateFolder, false)
+					.positiveText((CharSequence) "Create")
+					.negativeText(R.string.button_cancel)
+					.onPositive(new MaterialDialog.SingleButtonCallback() {
+				public void onClick(MaterialDialog dialog, DialogAction which) {
                     ListView listFolders = (ListView) PickerActivity.this.findViewById(R.id.list_folders);
                     File newFolder = new File(PickerActivity.this.mCurrentFolder, ((EditText) dialogCreateFolder.findViewById(R.id.text_input)).getText().toString().trim());
                     newFolder.mkdir();

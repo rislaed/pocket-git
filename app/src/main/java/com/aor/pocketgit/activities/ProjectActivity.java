@@ -3,7 +3,6 @@ package com.aor.pocketgit.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -17,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aor.pocketgit.R;
 import com.aor.pocketgit.utils.FontUtils;
@@ -36,10 +37,10 @@ public class ProjectActivity extends UpdatableActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_project);
+        setContentView(R.layout.activity_project);
         Toolbar toolbar = (Toolbar) findViewById(R.id.action_bar);
         setSupportActionBar(toolbar);
-        final String defaultPath = PreferenceManager.getDefaultSharedPreferences(this).getString("pref_default_directory", Environment.getExternalStorageDirectory().getAbsolutePath() + "/Git");
+        final String defaultPath = PreferenceManager.getDefaultSharedPreferences(this).getString("pref_default_directory", getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath());
         final EditText localPath = (EditText) findViewById(R.id.edit_local_path);
         localPath.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -317,8 +318,14 @@ public class ProjectActivity extends UpdatableActivity {
     }
 
     private void cancel() {
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((CharSequence) "Close").iconRes(R.drawable.ic_close).content((CharSequence) "Close without saving?").positiveText((int) R.string.button_close).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title((CharSequence) "Close")
+				.iconRes(R.drawable.ic_close)
+				.content((CharSequence) "Close without saving?")
+				.positiveText(R.string.button_close)
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 ProjectActivity.this.setResult(2);
                 ProjectActivity.this.finish();
             }

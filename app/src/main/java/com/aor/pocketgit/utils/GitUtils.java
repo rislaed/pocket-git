@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.CheckoutCommand;
 import org.eclipse.jgit.api.CloneCommand;
@@ -62,10 +63,10 @@ public class GitUtils {
     }
 
     private static boolean hasAtLeastOneReference(Project project) throws IOException {
-        for (Ref ref : getRepository(project).getAllRefs().values()) {
-            if (ref.getObjectId() != null) {
-                return true;
-            }
+        for (AnyObjectId objectId : getRepository(project).getAllRefsByPeeledObjectId().keySet()) {
+            if (objectId != null && objectId.toObjectId() != null) {
+            	return true;
+			}
         }
         return false;
     }

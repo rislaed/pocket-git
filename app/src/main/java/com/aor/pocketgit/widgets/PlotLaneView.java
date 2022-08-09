@@ -25,9 +25,9 @@ public class PlotLaneView extends ImageView {
     };
     private static final Paint PAINT = new Paint();
     public static int RADIUS = 3;
-    private List<Integer> mChildren = new ArrayList();
+    private List<Integer> mChildren = new ArrayList<>();
     private int mLane;
-    private List<Integer> mParent = new ArrayList();
+    private List<Integer> mParent = new ArrayList<>();
     private Set<Integer> mPassing;
 
     static {
@@ -92,7 +92,7 @@ public class PlotLaneView extends ImageView {
 
     public void setPassing(ArrayList<PlotLane> passing) {
         if (this.mPassing == null) {
-            this.mPassing = new HashSet();
+            this.mPassing = new HashSet<>();
         }
         this.mPassing.clear();
         Iterator<PlotLane> it = passing.iterator();

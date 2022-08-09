@@ -35,7 +35,7 @@ public class FlowLayout extends ViewGroup {
         int heightMode = View.MeasureSpec.getMode(heightMeasureSpec);
         int maxInternalWidth = View.MeasureSpec.getSize(widthMeasureSpec) - getHorizontalPadding();
         int maxInternalHeight = View.MeasureSpec.getSize(heightMeasureSpec) - getVerticalPadding();
-        ArrayList arrayList = new ArrayList();
+        ArrayList<RowMeasurement> arrayList = new ArrayList<>();
         RowMeasurement currentRow = new RowMeasurement(maxInternalWidth, widthMode);
         arrayList.add(currentRow);
         for (View child : getLayoutChildren()) {
@@ -52,7 +52,7 @@ public class FlowLayout extends ViewGroup {
         int longestRowWidth = 0;
         int totalRowHeight = 0;
         for (int index = 0; index < arrayList.size(); index++) {
-            RowMeasurement row = (RowMeasurement) arrayList.get(index);
+            RowMeasurement row = arrayList.get(index);
             totalRowHeight += row.getHeight();
             if (index < arrayList.size() - 1) {
                 totalRowHeight += this.verticalSpacing;

@@ -8,7 +8,6 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -41,6 +40,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.preference.PreferenceManager;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aor.pocketgit.R;
@@ -173,8 +173,7 @@ public class FilesActivity extends UpdatableActivity {
                     } else {
                         FilesActivity.this.getSupportActionBar().setTitle((CharSequence) FilesActivity.this.mProject.getName() + " (" + currentBranch.substring(0, 8) + ")");
                     }
-                } catch (Exception e) {
-                }
+                } catch (Exception e) {}
                 FilesActivity.this.getSupportActionBar().setTitle((CharSequence) FilesActivity.this.mProject.getName());
             }
 
@@ -183,7 +182,7 @@ public class FilesActivity extends UpdatableActivity {
                 FilesActivity.this.getSupportActionBar().setTitle(R.string.label_branches);
             }
         };
-        drawerLayout.setDrawerListener(this.mDrawerToggle);
+        drawerLayout.addDrawerListener(this.mDrawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.mListFiles.setChoiceMode(3);
         this.mListFiles.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
@@ -388,7 +387,7 @@ public class FilesActivity extends UpdatableActivity {
     private void setUpFAB() {
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        this.mCommitFAB = new FloatingActionButton.Builder(this).withColor(typedValue.data).withDrawable(getResources().getDrawable(R.drawable.ic_action_commit)).withMargins(0, 0, 16, 16).create();
+        this.mCommitFAB = new FloatingActionButton.Builder(this).withColor(typedValue.data).withDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_commit)).withMargins(0, 0, 16, 16).create();
         this.mCommitFAB.setVisibility(8);
         this.mCommitFAB.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -453,8 +452,13 @@ public class FilesActivity extends UpdatableActivity {
         View dialogBranchName = LayoutInflater.from(this).inflate(R.layout.dialog_single_input, (ViewGroup) null);
         final EditText input = (EditText) dialogBranchName.findViewById(R.id.text_input);
         ((TextView) dialogBranchName.findViewById(R.id.text_content)).setText("Enter the new branch name");
-        final MaterialDialog dialog = new MaterialDialog.Builder(this).title((CharSequence) "Create Branch").iconRes(R.drawable.ic_action_create_branch).customView(dialogBranchName, true).positiveText((CharSequence) "Create").callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        final MaterialDialog dialog = new MaterialDialog.Builder(this)
+				.title((CharSequence) "Create Branch")
+				.iconRes(R.drawable.ic_action_create_branch)
+				.customView(dialogBranchName, true)
+				.positiveText((CharSequence) "Create")
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 String name = input.getText().toString().trim();
                 try {
                     Repository repo = FilesActivity.this.getRepository(FilesActivity.this.mProject);
@@ -553,7 +557,7 @@ public class FilesActivity extends UpdatableActivity {
                         Toast.makeText(FilesActivity.this, "Failed to checkout", 0).show();
                         dialog.dismiss();
                     }
-                }).execute(new Object[]{repository, name});
+                }).execute(new Object[] { repository, name });
             } catch (Exception e) {
                 Toast.makeText(this, "Failed to checkout", 0).show();
             }
@@ -812,7 +816,7 @@ public class FilesActivity extends UpdatableActivity {
         if (this.mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        if (item.getItemId() == 16908332) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         switch (item.getItemId()) {
@@ -914,8 +918,14 @@ public class FilesActivity extends UpdatableActivity {
 
     private void optionTagCreate() {
         final View dialogTag = LayoutInflater.from(this).inflate(R.layout.dialog_tag, (ViewGroup) null);
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((int) R.string.title_dialog_tag).iconRes(R.drawable.ic_action_tag_list).customView(dialogTag, false).negativeText((int) R.string.button_cancel).positiveText((int) R.string.button_create).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title(R.string.title_dialog_tag)
+				.iconRes(R.drawable.ic_action_tag_create)
+				.customView(dialogTag, false)
+				.negativeText(R.string.button_cancel)
+				.positiveText(R.string.button_create)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 try {
                     Repository repository = FilesActivity.this.getRepository(FilesActivity.this.mProject);
                     String name = ((EditText) dialogTag.findViewById(R.id.text_name)).getText().toString().trim();
@@ -948,15 +958,23 @@ public class FilesActivity extends UpdatableActivity {
             revCommits.addAll(collection);
             StashAdapter adapter = new StashAdapter(this, revCommits);
             final ListView listStashed = (ListView) dialogListStash.findViewById(R.id.list_stashed);
-            final MaterialDialog dialog = new MaterialDialog.Builder(this).title((CharSequence) "Stash List").iconRes(R.drawable.ic_action_stash_list).customView(dialogListStash, false).positiveText((int) R.string.button_close).negativeText((int) R.string.button_apply).neutralText((int) R.string.button_drop).callback(new MaterialDialog.ButtonCallback() {
-                public void onNegative(MaterialDialog dialog) {
-                    FilesActivity.this.optionStashApply(listStashed.getCheckedItemPosition());
-                }
-
-                public void onNeutral(MaterialDialog dialog) {
-                    FilesActivity.this.actionStashDelete(listStashed.getCheckedItemPosition());
-                }
-            }).show();
+            final MaterialDialog dialog = new MaterialDialog.Builder(this)
+				.title((CharSequence) "Stash List")
+				.iconRes(R.drawable.ic_action_stash_list)
+				.customView(dialogListStash, false)
+				.positiveText(R.string.button_close)
+				.negativeText(R.string.button_apply)
+				.neutralText(R.string.button_drop)
+				.onNegative(new MaterialDialog.SingleButtonCallback() {
+                	public void onClick(MaterialDialog dialog, DialogAction which) {
+                    	FilesActivity.this.optionStashApply(listStashed.getCheckedItemPosition());
+                	}
+				})
+				.onNeutral(new MaterialDialog.SingleButtonCallback() {
+					public void onClick(MaterialDialog dialog, DialogAction which) {
+                    	FilesActivity.this.actionStashDelete(listStashed.getCheckedItemPosition());
+            		}
+            	}).show();
             dialog.getActionButton(DialogAction.NEGATIVE).setEnabled(false);
             dialog.getActionButton(DialogAction.NEUTRAL).setEnabled(false);
             listStashed.setAdapter(adapter);
@@ -990,11 +1008,17 @@ public class FilesActivity extends UpdatableActivity {
         }
         final View dialogDeleteStash = LayoutInflater.from(this).inflate(R.layout.dialog_delete_stash, (ViewGroup) null);
         ((TextView) dialogDeleteStash.findViewById(R.id.text_message)).setText(list.get(stashRef).getShortMessage());
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((CharSequence) "Apply Stash").iconRes(R.drawable.ic_action_stash_apply).customView(dialogDeleteStash, false).positiveText((int) R.string.button_apply).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title((CharSequence) "Apply Stash")
+				.iconRes(R.drawable.ic_action_stash_apply)
+				.customView(dialogDeleteStash, false)
+				.positiveText(R.string.button_apply)
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 try {
                     Repository repository = FilesActivity.this.getRepository(FilesActivity.this.mProject);
-                    StashApplyCommand stashCommand = new Git(repository).stashApply().setStashRef(((RevCommit) list.get(stashRef)).getName());
+                    StashApplyCommand stashCommand = new Git(repository).stashApply().setStashRef(list.get(stashRef).getName());
                     stashCommand.setApplyIndex(true);
                     stashCommand.call();
                     if (((CheckBox) dialogDeleteStash.findViewById(R.id.check_delete_stash)).isChecked()) {
@@ -1039,8 +1063,14 @@ public class FilesActivity extends UpdatableActivity {
     @SuppressLint({"InflateParams"})
     private void optionStashCreate() {
         final View dialogCreateStash = LayoutInflater.from(this).inflate(R.layout.dialog_create_stash, (ViewGroup) null);
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((CharSequence) "Save Stash").iconRes(R.drawable.ic_action_stash).customView(dialogCreateStash, false).positiveText((int) R.string.button_create).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title((CharSequence) "Save Stash")
+				.iconRes(R.drawable.ic_action_stash)
+				.customView(dialogCreateStash, false)
+				.positiveText(R.string.button_create)
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 try {
                     Repository repository = FilesActivity.this.getRepository(FilesActivity.this.mProject);
                     StashCreateCommand stashCommand = new Git(repository).stashCreate().setIncludeUntracked(((CheckBox) dialogCreateStash.findViewById(R.id.check_include_untracked)).isChecked());
@@ -1078,8 +1108,14 @@ public class FilesActivity extends UpdatableActivity {
         editAuthor.setText(author);
         final EditText editEmail = (EditText) dialogAuthor.findViewById(R.id.text_email);
         editEmail.setText(email);
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((int) R.string.title_author_data).iconRes(R.drawable.ic_author).customView(dialogAuthor, false).positiveText((int) R.string.button_save).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title(R.string.title_author_data)
+				.iconRes(R.drawable.ic_author)
+				.customView(dialogAuthor, false)
+				.positiveText(R.string.button_save)
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 try {
                     Repository repository = FilesActivity.this.getRepository(FilesActivity.this.mProject);
                     StoredConfig config = repository.getConfig();
@@ -1125,8 +1161,14 @@ public class FilesActivity extends UpdatableActivity {
                         spinnerRemotes.setSelection(i);
                     }
                 }
-                FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((int) R.string.title_dialog_pull).iconRes(R.drawable.ic_action_pull).positiveText((int) R.string.button_pull).negativeText((int) R.string.button_cancel).customView(viewRemotes, false).callback(new MaterialDialog.ButtonCallback() {
-                    public void onPositive(MaterialDialog dialog) {
+                FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+						.title(R.string.title_dialog_pull)
+						.iconRes(R.drawable.ic_action_pull)
+						.positiveText(R.string.button_pull)
+						.negativeText(R.string.button_cancel)
+						.customView(viewRemotes, false)
+						.onPositive(new MaterialDialog.SingleButtonCallback() {
+					public void onClick(MaterialDialog dialog, DialogAction which) {
                         FilesActivity.this.executePull(((RemoteConfig) spinnerRemotes.getSelectedItem()).getName());
                     }
                 }).show().getWindow().getDecorView());
@@ -1179,8 +1221,14 @@ public class FilesActivity extends UpdatableActivity {
                         spinnerRemotes.setSelection(i);
                     }
                 }
-                FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((int) R.string.title_dialog_fetch).iconRes(R.drawable.ic_action_fetch).positiveText((int) R.string.button_fetch).negativeText((int) R.string.button_cancel).customView(viewRemotes, false).callback(new MaterialDialog.ButtonCallback() {
-                    public void onPositive(MaterialDialog dialog) {
+                FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+						.title(R.string.title_dialog_fetch)
+						.iconRes(R.drawable.ic_action_fetch)
+						.positiveText(R.string.button_fetch)
+						.negativeText(R.string.button_cancel)
+						.customView(viewRemotes, false)
+						.onPositive(new MaterialDialog.SingleButtonCallback() {
+					public void onClick(MaterialDialog dialog, DialogAction which) {
                         FilesActivity.this.executeFetch(((RemoteConfig) spinnerRemotes.getSelectedItem()).getName());
                     }
                 }).show().getWindow().getDecorView());
@@ -1234,8 +1282,13 @@ public class FilesActivity extends UpdatableActivity {
                         spinnerRemotes.setSelection(i);
                     }
                 }
-                FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((int) R.string.title_dialog_push).iconRes(R.drawable.ic_action_push).positiveText((int) R.string.button_push).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-                    public void onPositive(MaterialDialog dialog) {
+                FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+						.title(R.string.title_dialog_push)
+						.iconRes(R.drawable.ic_action_push)
+						.positiveText(R.string.button_push)
+						.negativeText(R.string.button_cancel)
+						.onPositive(new MaterialDialog.SingleButtonCallback() {
+					public void onClick(MaterialDialog dialog, DialogAction which) {
                         FilesActivity.this.executePush(((RemoteConfig) spinnerRemotes.getSelectedItem()).getName());
                     }
                 }).customView(viewRemotes, false).show().getWindow().getDecorView());
@@ -1290,8 +1343,13 @@ public class FilesActivity extends UpdatableActivity {
                         spinnerRemotes.setSelection(i);
                     }
                 }
-                FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((int) R.string.title_dialog_push).iconRes(R.drawable.ic_action_push).positiveText((int) R.string.button_push_tags).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-                    public void onPositive(MaterialDialog dialog) {
+                FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+						.title(R.string.title_dialog_push)
+						.iconRes(R.drawable.ic_action_push)
+						.positiveText(R.string.button_push_tags)
+						.negativeText(R.string.button_cancel)
+						.onPositive(new MaterialDialog.SingleButtonCallback() {
+					public void onClick(MaterialDialog dialog, DialogAction which) {
                         FilesActivity.this.executePushTags(((RemoteConfig) spinnerRemotes.getSelectedItem()).getName());
                     }
                 }).customView(viewRemotes, false).show().getWindow().getDecorView());
@@ -1323,8 +1381,14 @@ public class FilesActivity extends UpdatableActivity {
     }
 
     private void optionRevert() {
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((CharSequence) "Revert").iconRes(R.drawable.ic_action_reset).content((CharSequence) "Discard all changes from the index and working tree?").positiveText((int) R.string.button_revert).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title((CharSequence) "Revert")
+				.iconRes(R.drawable.ic_action_reset)
+				.content((CharSequence) "Discard all changes from the index and working tree?")
+				.positiveText(R.string.button_revert)
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 try {
                     GitUtils.revert(FilesActivity.this.mProject);
                 } catch (Exception e) {
@@ -1339,8 +1403,14 @@ public class FilesActivity extends UpdatableActivity {
     private void optionNewFile() {
         final View dialogFileName = LayoutInflater.from(this).inflate(R.layout.dialog_single_input, (ViewGroup) null);
         ((TextView) dialogFileName.findViewById(R.id.text_content)).setText("Enter file name");
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((CharSequence) "New File").iconRes(R.drawable.ic_action_add_file).customView(dialogFileName, false).positiveText((CharSequence) "Create").negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title((CharSequence) "New File")
+				.iconRes(R.drawable.ic_action_add_file)
+				.customView(dialogFileName, false)
+				.positiveText((CharSequence) "Create")
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 try {
                     if (new File(FilesActivity.this.mCurrentFolder, ((EditText) dialogFileName.findViewById(R.id.text_input)).getText().toString().trim()).createNewFile()) {
                         Toast.makeText(FilesActivity.this, "File created", 0).show();
@@ -1359,8 +1429,14 @@ public class FilesActivity extends UpdatableActivity {
     private void optionNewFolder() {
         final View dialogFolderName = LayoutInflater.from(this).inflate(R.layout.dialog_single_input, (ViewGroup) null);
         ((TextView) dialogFolderName.findViewById(R.id.text_content)).setText("Enter folder name");
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((CharSequence) "New Folder").iconRes(R.drawable.ic_action_add_folder).customView(dialogFolderName, false).positiveText((CharSequence) "Create").negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title((CharSequence) "New Folder")
+				.iconRes(R.drawable.ic_action_add_folder)
+				.customView(dialogFolderName, false)
+				.positiveText((CharSequence) "Create")
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 EditText input = (EditText) dialogFolderName.findViewById(R.id.text_input);
                 if (new File(FilesActivity.this.mCurrentFolder, input.getText().toString().trim()).mkdir()) {
                     Toast.makeText(FilesActivity.this, "Folder created", 0).show();
@@ -1382,7 +1458,7 @@ public class FilesActivity extends UpdatableActivity {
                 branchList.setListMode(ListBranchCommand.ListMode.REMOTE);
             }
             List<Ref> branches = branchList.call();
-            List<Ref> selectableBranches = new ArrayList<>();
+            final List<Ref> selectableBranches = new ArrayList<>();
             for (Ref ref : branches) {
                 if (!ref.getName().equals("HEAD") && !ref.getName().equals(currentBranch)) {
                     selectableBranches.add(ref);
@@ -1393,19 +1469,28 @@ public class FilesActivity extends UpdatableActivity {
                 Toast.makeText(this, "No other branches to delete!", 0).show();
                 return;
             }
-            final ArrayAdapter<Ref> adapter = new BranchArrayAdapter(this, selectableBranches);
-            final MaterialDialog dialog = new MaterialDialog.Builder(this).title((CharSequence) "Select Branch to Delete").iconRes(R.drawable.ic_action_delete_branch)/* .adapter(adapter, new MaterialDialog.ListCallback() {
-                public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
-                }
-            }) */.negativeText(R.string.button_cancel).show();
-            /* dialog.getRecyclerView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                    Set<String> set = new HashSet<>();
-                    set.add(adapter.getItem(position).getName());
-                    FilesActivity.this.actionDeleteBranch(set, "Branch", "Branches");
-                    dialog.dismiss();
-                }
-            }); */
+            // final ArrayAdapter<Ref> adapter = new BranchArrayAdapter(this, selectableBranches);
+			List<String> namesOfBranches = new ArrayList<>();
+			for (Ref ref : selectableBranches) {
+				String name = ref.getName();
+				if (name.startsWith(Constants.R_HEADS)) {
+					name = name.substring(11);
+				}
+				namesOfBranches.add(name);
+			}
+            final MaterialDialog dialog = new MaterialDialog.Builder(this)
+				.title((CharSequence) "Select Branch to Delete")
+				.iconRes(R.drawable.ic_action_delete_branch)
+				.items(namesOfBranches)
+				.itemsCallback(new MaterialDialog.ListCallback() {
+					@Override
+					public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+						Set<String> set = new HashSet<>();
+						set.add(selectableBranches.get(which).getName());
+						FilesActivity.this.actionDeleteBranch(set, "Branch", "Branches");
+					}
+				})
+				.negativeText(R.string.button_cancel).show();
             FontUtils.setRobotoFont(this, dialog.getWindow().getDecorView());
         } catch (Exception e) {
             Log.e("Pocket Git", "", e);
@@ -1419,12 +1504,18 @@ public class FilesActivity extends UpdatableActivity {
         } else {
             type = typeSingular;
         }
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((CharSequence) "Delete " + type).iconRes(R.drawable.ic_action_delete_branch).content((CharSequence) "Delete " + (names.size() == 1 ? names.iterator().next() + " " + type + "?" : String.valueOf(names.size()) + " " + type + "?")).positiveText((int) R.string.button_delete).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title((CharSequence) "Delete " + type)
+				.iconRes(R.drawable.ic_action_delete_branch)
+				.content((CharSequence) "Delete " + (names.size() == 1 ? names.iterator().next() + " " + type + "?" : String.valueOf(names.size()) + " " + type + "?"))
+				.positiveText(R.string.button_delete)
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+			public void onClick(MaterialDialog dialog, DialogAction which) {
                 try {
                     Repository repository = FilesActivity.this.getRepository(FilesActivity.this.mProject);
                     DeleteBranchCommand delete = new Git(repository).branchDelete();
-                    delete.setBranchNames((String[]) names.toArray(new String[0]));
+                    delete.setBranchNames(names.toArray(new String[0]));
                     delete.setForce(true);
                     delete.call();
                     repository.close();
@@ -1482,8 +1573,14 @@ public class FilesActivity extends UpdatableActivity {
             editAuthor.setText(author);
             final EditText editEmail = (EditText) dialogAuthor.findViewById(R.id.text_email);
             editEmail.setText(email);
-            FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title(R.string.title_author_data).iconRes(R.drawable.ic_author).customView(dialogAuthor, false).positiveText(R.string.button_save).negativeText(R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-                public void onPositive(MaterialDialog dialog) {
+            FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+					.title(R.string.title_author_data)
+					.iconRes(R.drawable.ic_author)
+					.customView(dialogAuthor, false)
+					.positiveText(R.string.button_save)
+					.negativeText(R.string.button_cancel)
+					.onPositive(new MaterialDialog.SingleButtonCallback() {
+				public void onClick(MaterialDialog dialog, DialogAction which) {
                     SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(FilesActivity.this).edit();
                     edit.putString("pref_default_author", editAuthor.getText().toString().trim());
                     edit.putString("pref_default_email", editEmail.getText().toString().trim());
@@ -1496,8 +1593,13 @@ public class FilesActivity extends UpdatableActivity {
         final View dialogCommit = LayoutInflater.from(this).inflate(R.layout.dialog_commit, (ViewGroup) null);
         final ListView listStaged = (ListView) dialogCommit.findViewById(R.id.list_staged);
         listStaged.setAdapter(new GitFileAdapter(this, getStagedChanges()));
-        MaterialDialog dialog = new MaterialDialog.Builder(this).title(R.string.title_commit).customView(dialogCommit, false).positiveText(R.string.button_ok).negativeText(R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+				.title(R.string.title_commit)
+				.customView(dialogCommit, false)
+				.positiveText(R.string.button_ok)
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+			public void onClick(MaterialDialog dialog, DialogAction which) {
                 try {
                     Repository repo = FilesActivity.this.getRepository(FilesActivity.this.mProject);
                     new Git(repo).commit().setMessage(((TextView) dialogCommit.findViewById(R.id.text_message)).getText().toString()).call();
@@ -1572,7 +1674,7 @@ public class FilesActivity extends UpdatableActivity {
                             ((GitFileAdapter) FilesActivity.this.mListFiles.getAdapter()).refill(new LinkedList<>());
                         }
                         this.isShowingSearch = true;
-                        this.mTask = new SearchTask(FilesActivity.this.mCurrentFolder).execute(new String[]{query});
+                        this.mTask = new SearchTask(FilesActivity.this.mCurrentFolder).execute(new String[] { query });
                     }
                 }
             }
@@ -1633,8 +1735,13 @@ public class FilesActivity extends UpdatableActivity {
         for (int i = 0; i < this.mListFiles.getCheckedItemCount(); i++) {
             toDelete.add(((GitFile) this.mListFiles.getItemAtPosition((int) this.mListFiles.getCheckedItemIds()[i])).getFile());
         }
-        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this).title((CharSequence) "Delete files").content((CharSequence) "Are you sure?").positiveText((int) R.string.button_delete).negativeText((int) R.string.button_cancel).callback(new MaterialDialog.ButtonCallback() {
-            public void onPositive(MaterialDialog dialog) {
+        FontUtils.setRobotoFont(this, new MaterialDialog.Builder(this)
+				.title((CharSequence) "Delete files")
+				.content((CharSequence) "Are you sure?")
+				.positiveText(R.string.button_delete)
+				.negativeText(R.string.button_cancel)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+            public void onClick(MaterialDialog dialog, DialogAction which) {
                 for (File file : toDelete) {
                     try {
                         deleteFile(file);
@@ -1737,7 +1844,7 @@ public class FilesActivity extends UpdatableActivity {
         }
 
         protected List<GitFile> doInBackground(String... strArr) {
-            List<GitFile> result = new ArrayList();
+            List<GitFile> result = new ArrayList<>();
             try {
                 File[] searchFiles = FileUtils.searchFiles(this.mFolder, strArr[0], new File(FilesActivity.this.mProject.getLocalPath() + "/.git"));
                 if (!isCancelled()) {

@@ -21,7 +21,7 @@ public class RefSpecAdapter extends ArrayAdapter<TypedRefSpec> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_refspec, parent, false);
             FontUtils.setRobotoFont(getContext(), convertView);
         }
-        TypedRefSpec refspec = (TypedRefSpec) getItem(position);
+        TypedRefSpec refspec = getItem(position);
         ((TextView) convertView.findViewById(R.id.text_refspec)).setText(refspec.getRefSpec().toString());
         ((TextView) convertView.findViewById(R.id.text_type)).setText(refspec.getType().toString());
         return convertView;

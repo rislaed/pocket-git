@@ -22,7 +22,7 @@ public class BranchArrayAdapter extends ArrayAdapter<Ref> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_simple, parent, false);
             FontUtils.setRobotoFont(getContext(), convertView);
         }
-        String name = ((Ref) getItem(position)).getName();
+        String name = getItem(position).getName();
         if (name.startsWith(Constants.R_HEADS)) {
             name = name.substring(11);
         }

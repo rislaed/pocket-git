@@ -2,7 +2,6 @@ package com.aor.pocketgit.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +9,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.preference.PreferenceManager;
 import com.aor.pocketgit.R;
 import com.aor.pocketgit.utils.FontUtils;
 import com.aor.pocketgit.utils.GitUtils;
 import com.aor.pocketgit.utils.MD5Util;
 import com.aor.pocketgit.widgets.FlowLayout;
 import com.aor.pocketgit.widgets.PlotLaneView;
+import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.eclipse.jgit.lib.Constants;
@@ -46,7 +47,7 @@ public class CommitAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(this.mContext).inflate(R.layout.item_commit, parent, false);
             FontUtils.setRobotoFont(this.mContext, convertView);
         }
-        PlotCommit<PlotLane> commit = (PlotCommit) getItem(position);
+        PlotCommit<PlotLane> commit = (PlotCommit<PlotLane>) getItem(position);
         PlotLaneView plotLane = (PlotLaneView) convertView.findViewById(R.id.plot_lane);
         plotLane.getLayoutParams().width = (int) this.mWidth;
         plotLane.setLane(commit.getLane().getPosition());
@@ -87,15 +88,12 @@ public class CommitAdapter extends BaseAdapter {
         }
         plotLane.invalidate();
         if (this.mGravatar) {
-            try {
-                // TODO: Picasso.with(this.mContext).load("http://www.gravatar.com/avatar/" + MD5Util.md5Hex(commit.getAuthorIdent().getEmailAddress()) + "?s=204&d=404").placeholder((int) R.drawable.img_default_photo).into((ImageView) convertView.findViewById(R.id.image_photo));
-				((ImageView) convertView.findViewById(R.id.image_photo)).setImageResource(R.drawable.img_default_photo);
-            } catch (Exception e) {
-            }
+            Glide.with(this.mContext).load("https://www.gravatar.com/avatar/" + MD5Util.md5Hex(commit.getAuthorIdent().getEmailAddress()) + "?d=identicon").placeholder(R.drawable.img_default_photo).into((ImageView) convertView.findViewById(R.id.image_photo));
         } else {
             convertView.findViewById(R.id.image_photo).setVisibility(8);
         }
         return convertView;
+		
     }
 
     public boolean hasStableIds() {

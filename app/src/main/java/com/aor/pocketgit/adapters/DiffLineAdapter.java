@@ -27,7 +27,7 @@ public class DiffLineAdapter extends ArrayAdapter<DiffLine> {
         } else {
             convertView.setLayoutParams(new AbsListView.LayoutParams(-1, -2));
         }
-        DiffLine diff = (DiffLine) getItem(position);
+        DiffLine diff = getItem(position);
         TextView lineText = (TextView) convertView.findViewById(R.id.text_line_text);
         lineText.setTypeface(FontUtils.getSourceCodeTypeface(getContext()));
         if (diff.isHeader()) {
