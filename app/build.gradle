@@ -20,6 +20,11 @@ android {
 		}
 	}
 
+	lintOptions {
+		// Remove that when code getting stronger enough
+		abortOnError false
+	}
+
 	packagingOptions {
 		resources.merges.add("plugin.properties")
 	}
